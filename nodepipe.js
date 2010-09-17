@@ -47,8 +47,5 @@ function makeCtx(node, isIncoming){
                 }
 }
 
-var p = new Pipeline();
-p.addHandler({incoming:function(ctx,evt){console.log(evt);ctx.forward(evt+evt);}});
-p.addHandler({incoming:function(ctx,evt){console.log(evt);}});
-p.pushIncoming("yo");
+exports.makePipe = function(){ return new Pipeline(); }
 
