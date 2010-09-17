@@ -1,7 +1,7 @@
 var Pipeline = require("./nodepipe");
 var assert = require("assert");
 
-function simpleTest(){
+function propagateForwardIncomingHandlers(){
     var target = "x";
 
     var p = Pipeline.makePipe();
@@ -19,4 +19,26 @@ function simpleTest(){
     assert.equal(target,"yoyo");
 }
 
-simpleTest();
+function propagateReverseOutgoingHandlers(){
+    var target = "x";
+
+    var p = Pipeline.makePipe();
+    p.addHandler(
+        {outgoing:function(ctx,evt){
+                    target = evt;
+                   }
+        });
+    p.addHandler(
+        {outgoing:function(ctx,evt){ 
+                    target = evt; 
+                    ctx.reverse(evt+evt);
+                  }
+        });
+
+    p.pushOutgoing("yo");
+    
+    assert.equal(target,"yoyo");
+}
+
+propagateForwardIncomingHandlers();
+propagateReverseOutgoingHandlers();
