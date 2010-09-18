@@ -31,7 +31,7 @@ function Node(handler){
                 this.prev = null;
 }
 
-function Pipeline(){
+function Pipeline(stream){
                 var self = this;
                 this.first = null;
                 this.last = null;
@@ -50,11 +50,11 @@ function Pipeline(){
                 };
                 
                 this.pushIncoming = function(evt){
-                    self.first.incoming(makeCtx(self.first,true),evt);
+                    self.first.incoming(makeCtx(self.first,stream,true),evt);
                 };
  
                 this.pushOutgoing = function(evt){
-                    self.last.outgoing(makeCtx(self.last,false),evt);
+                    self.last.outgoing(makeCtx(self.last,stream,false),evt);
                 };
                 
                 this.toString = function(){
@@ -70,7 +70,7 @@ function Pipeline(){
 }
   
  
-function makeCtx(node, isIncoming){
+function makeCtx(node, stream, isIncoming){
  
                 var incomingCtx = function(evt){
                     if(node.next){
@@ -84,12 +84,12 @@ function makeCtx(node, isIncoming){
                 };
                
                 if(isIncoming){
-                                return {forward:incomingCtx, reverse:outgoingCtx};
+                                return {forward:incomingCtx, reverse:outgoingCtx, stream:stream};
                 }
                 else{
-                                return {forward:outgoingCtx, reverse:incomingCtx};
+                                return {forward:outgoingCtx, reverse:incomingCtx, stream:stream};
                 }
 }
 
-exports.makePipe = function(){ return new Pipeline(); }
+exports.makePipe = function(stream){ return new Pipeline(stream); }
 

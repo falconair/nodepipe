@@ -4,7 +4,7 @@ var assert = require("assert");
 function multipleHandlers(){
     var target = "x";
 
-    var p = Pipeline.makePipe();
+    var p = Pipeline.makePipe(null);
     p.addHandler(
         {incoming:function(ctx,evt){
                     target = evt;
@@ -25,7 +25,7 @@ function multipleHandlers(){
 function propagateForwardIncomingHandlers(){
     var target = "x";
 
-    var p = Pipeline.makePipe();
+    var p = Pipeline.makePipe(null);
     p.addHandler(
         {incoming:function(ctx,evt){
                     target = evt;
@@ -43,7 +43,7 @@ function propagateForwardIncomingHandlers(){
 function propagateReverseOutgoingHandlers(){
     var target = "x";
 
-    var p = Pipeline.makePipe();
+    var p = Pipeline.makePipe(null);
     p.addHandler(
         {outgoing:function(ctx,evt){
                     target = evt;
