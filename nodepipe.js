@@ -24,6 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 
 function Node(handler){
+                this.description = handler.description || "unnamed";
                 this.incoming = handler.incoming || function(ctx,event){ if(ctx.next){ctx.next(event)};};
                 this.outgoing = handler.outgoing || function(ctx,event){ if(ctx.next){ctx.next(event)};};
                 this.next = null;
@@ -55,14 +56,32 @@ function Pipeline(){
                 this.pushOutgoing = function(evt){
                     self.last.outgoing(makeCtx(self.last,false),evt);
                 };
+                
+                this.toString = function(){
+                    var nodes = [];
+                    var node = self.first;
+                    while(node !== null){
+                        nodes.push(node.description);
+                        node = node.next;
+                    }
+                    return nodes.join(",");
+                };
 
 }
   
  
 function makeCtx(node, isIncoming){
  
-                var incomingCtx = function(evt){node.next.incoming(makeCtx(node,true),evt);};
-                var outgoingCtx = function(evt){node.prev.outgoing(makeCtx(node,false),evt);};
+                var incomingCtx = function(evt){
+                    if(node.next){
+                        node.next.incoming(makeCtx(node,true),evt);
+                    }
+                };
+                var outgoingCtx = function(evt){
+                    if(node.prev){
+                        node.prev.outgoing(makeCtx(node,false),evt);
+                    }
+                };
                
                 if(isIncoming){
                                 return {forward:incomingCtx, reverse:outgoingCtx};
