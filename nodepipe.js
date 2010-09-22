@@ -57,7 +57,7 @@ function Pipeline(stream){
                     self.last.outgoing(makeCtx(self.last,stream,false),evt);
                 };
                 
-                this.pushIncomingData = function(evt){
+                this.pushIncomingData = function(data){
                     self.first.incoming(makeCtx(self.first,stream,true),{eventType:"data", data:data});
                 };
  
