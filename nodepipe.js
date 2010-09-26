@@ -51,19 +51,19 @@ function Pipeline(stream){
                 };
                 
                 this.pushIncoming = function(evt){
-                    self.first.incoming(makeCtx(self.first,stream,true, state),evt);
+                    self.first.incoming(makeCtx(self.first,stream,true, self.state),evt);
                 };
  
                 this.pushOutgoing = function(evt){
-                    self.last.outgoing(makeCtx(self.last,stream,false, state),evt);
+                    self.last.outgoing(makeCtx(self.last,stream,false, self.state),evt);
                 };
                 
                 this.pushIncomingData = function(data){
-                    self.first.incoming(makeCtx(self.first,stream,true, state),{eventType:"data", data:data});
+                    self.first.incoming(makeCtx(self.first,stream,true, self.state),{eventType:"data", data:data});
                 };
  
                 this.pushOutgoingData = function(data){
-                    self.last.outgoing(makeCtx(self.last,stream,false, state),{eventType:"data", data:data});
+                    self.last.outgoing(makeCtx(self.last,stream,false, self.state),{eventType:"data", data:data});
                 };
                 
                 
