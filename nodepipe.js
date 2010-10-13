@@ -25,18 +25,8 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 function Node(handler) {
     this.description = handler.description || "unnamed";
-    this.incoming = handler.incoming ||
-    function (ctx, event) {
-        if (ctx.next) {
-            ctx.next(event)
-        };
-    };
-    this.outgoing = handler.outgoing ||
-    function (ctx, event) {
-        if (ctx.next) {
-            ctx.next(event)
-        };
-    };
+    this.incoming = handler.incoming || function (ctx, event) { if (ctx.next) { ctx.sendNext(event) };  };
+    this.outgoing = handler.outgoing || function (ctx, event) { if (ctx.next) { ctx.sendNext(event) };  };
     this.next = null;
     this.prev = null;
 }
