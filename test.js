@@ -24,7 +24,7 @@ var tests = {
 
         assert.equal(p.toString(), "first,second");
     },
-    propagatesendNextIncomingHandlers: function () {
+    propagateSendNextIncomingHandlers: function () {
         var target = "x";
 
         var p = Pipeline.makePipe(null);
@@ -44,7 +44,7 @@ var tests = {
 
         assert.equal(target, "yoyo");
     },
-    propagateReverseOutgoingHandlers: function () {
+    propagateSendNextOutgoingHandlers: function () {
         var target = "x";
 
         var p = Pipeline.makePipe(null);
