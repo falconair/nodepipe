@@ -1,66 +1,79 @@
 var Pipeline = require("./nodepipe");
 var assert = require("assert");
 
-function multipleHandlers(){
-    var target = "x";
+var tests = {
+    multipleHandlers: function () {
+        var target = "x";
 
-    var p = Pipeline.makePipe(null);
-    p.addHandler(
-        {incoming:function(ctx,evt){
-                    target = evt;
-                    ctx.forward(evt+evt);
-                   },
+        var p = Pipeline.makePipe(null);
+        p.addHandler({
+            incoming: function (ctx, evt) {
+                target = evt;
+                ctx.sendNext(evt + evt);
+            },
             description: "first"
         });
-    p.addHandler(
-        {incoming:function(ctx,evt){ target = evt; },
+        p.addHandler({
+            incoming: function (ctx, evt) {
+                target = evt;
+            },
             description: "second"
         });
 
-    p.pushIncoming("yo");
-    
-    assert.equal(p.toString(),"first,second");
-}
+        p.pushIncoming("yo");
 
-function propagateForwardIncomingHandlers(){
-    var target = "x";
+        assert.equal(p.toString(), "first,second");
+    },
+    propagatesendNextIncomingHandlers: function () {
+        var target = "x";
 
-    var p = Pipeline.makePipe(null);
-    p.addHandler(
-        {incoming:function(ctx,evt){
-                    target = evt;
-                    ctx.forward(evt+evt);
-                   }
+        var p = Pipeline.makePipe(null);
+        p.addHandler({
+            incoming: function (ctx, evt) {
+                target = evt;
+                ctx.sendNext(evt + evt);
+            }
         });
-    p.addHandler(
-        {incoming:function(ctx,evt){ target = evt; }});
-
-    p.pushIncoming("yo");
-    
-    assert.equal(target,"yoyo");
-}
-
-function propagateReverseOutgoingHandlers(){
-    var target = "x";
-
-    var p = Pipeline.makePipe(null);
-    p.addHandler(
-        {outgoing:function(ctx,evt){
-                    target = evt;
-                   }
-        });
-    p.addHandler(
-        {outgoing:function(ctx,evt){ 
-                    target = evt; 
-                    ctx.forward(evt+evt);
-                  }
+        p.addHandler({
+            incoming: function (ctx, evt) {
+                target = evt;
+            }
         });
 
-    p.pushOutgoing("yo");
-    
-    assert.equal(target,"yoyo");
-}
+        p.pushIncoming("yo");
 
-multipleHandlers();
-propagateForwardIncomingHandlers();
-propagateReverseOutgoingHandlers();
+        assert.equal(target, "yoyo");
+    },
+    propagateReverseOutgoingHandlers: function () {
+        var target = "x";
+
+        var p = Pipeline.makePipe(null);
+        p.addHandler({
+            outgoing: function (ctx, evt) {
+                target = evt;
+            }
+        });
+        p.addHandler({
+            outgoing: function (ctx, evt) {
+                target = evt;
+                ctx.sendNext(evt + evt);
+            }
+        });
+
+        p.pushOutgoing("yo");
+
+        assert.equal(target, "yoyo");
+    },
+};
+
+
+
+
+
+
+for (var testx in Object.keys(tests)) {
+    if (true) {
+        console.log("\n\n============Running " + Object.keys(tests)[testx]);
+        tests[Object.keys(tests)[testx]].call();
+    }
+}
