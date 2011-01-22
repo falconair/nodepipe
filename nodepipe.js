@@ -23,6 +23,9 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 
+/**
+* Implementation detail
+*/
 function Node(handler) {
     this.description = handler.description || "unnamed";
     this.incoming = handler.incoming || function (ctx, event) { ctx.sendNext(event)  };
@@ -31,6 +34,19 @@ function Node(handler) {
     this.prev = null;
 }
 
+/**
+* Implementation of the Pipeline class
+* Pipeline is a bi-directional, ordered chain of functions. Each function in the pipeline
+* communicates with the next function through an interface provided by the pipeline.
+*
+* Functions inside the pipeline need to accept events and context objects. Context objects provide a
+* way to communicate with the next or previous functions and access to pipe-level global variables.
+*
+* 'Pipeline' is inspired by pipelines of Java's netty and grizzly projects. It implements a
+* bi-directional 'intercepting-filter.' 
+*
+* The implementation of based on a linked-list.
+*/
 function Pipeline(stream) {
     var self = this;
     this.first = null;
