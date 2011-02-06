@@ -4,9 +4,7 @@
   "version": "0.0.1",
   "homepage": "https://github.com/falconair/nodepipe",
   "author": "Shahbaz Chaudhary <shahbazc@gmail.com>",
-  "directories": {
-    "lib": ""
-  },
+  "main": "./nodepipe",
   "engines": {
     "node": "0.2.5"
   }
