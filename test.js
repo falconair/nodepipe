@@ -25,6 +25,26 @@ var tests = {
 
         assert.equal(p.toString(), "first,second");
     },
+    stateobject: function () {
+
+        var p = Pipeline.makePipe(null);
+        p.addHandler({
+            incoming: function (ctx, evt) {
+		ctx.state['hello'] = "world";
+                ctx.sendNext(evt + evt);
+            },
+            description: "first"
+        });
+        p.addHandler({
+            incoming: function (ctx, evt) {
+		assert.equal(ctx.state['hello'], "world");
+            },
+            description: "second"
+        });
+
+        p.pushIncoming("yo");
+
+    },
     propagateSendNextIncoming4Handlers: function () {
         var target = "x";
 
