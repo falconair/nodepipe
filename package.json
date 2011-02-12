@@ -6,6 +6,6 @@
   "author": "Shahbaz Chaudhary <shahbazc@gmail.com>",
   "main": "./nodepipe",
   "engines": {
-    "node": "0.2.5"
+    "node": "0.4.0"
   }
 }
